@@ -1,0 +1,4 @@
+#!/bin/sh
+git -C /var/lib/git/cucyber/hackpack fetch --all && git -C /var/lib/git/cucyber/hackpack reset --hard origin/master
+make -C /var/lib/git/cucyber/hackpack clean
+make -C /var/lib/git/cucyber/hackpack update

@@ -1,0 +1,36 @@
+#!/bin/bash -e
+# setup SSH key
+if [ ! -e "$HOME"/.ssh/id_rsa ]; then
+	/usr/bin/ssh-keygen -q -f "$HOME"/.ssh/id_rsa -N ''
+	echo 'SSH Public Key: '
+	echo
+	cat "$HOME"/.ssh/id_rsa.pub
+	echo
+	echo 'Add this key to GitHub and restart the container'
+	exit
+fi
+
+# add GitHub fingerprint
+[ -e "$HOME"/.ssh/known_hosts ] || ssh-keyscan github.com >"$HOME"/.ssh/known_hosts
+
+# clone repositories
+[ -e /var/www/cucyber/.git ] || git clone  -b dev --single-branch git@github.com:CUCyber/cucyber.github.io.git /var/www/cucyber
+[ -e /var/lib/git/cucyber/website/.git ] || git clone  -b dev --single-branch git@github.com:CUCyber/cucyber.github.io.git /var/lib/git/cucyber/website
+[ -e /var/lib/git/cucyber/hackpack/.git ] || git clone  -b master --single-branch git@github.com:CUCyber/hackpack.git /var/lib/git/cucyber/hackpack
+[ -e /var/lib/git/cucyber/presentations/.git ] || git clone  -b master --single-branch git@github.com:CUCyber/presentations.git /var/lib/git/cucyber/presentations
+
+# generate webhook config
+mkdir -p /etc/webhook
+cp -f /ext/etc/webhook/hooks.json /etc/webhook/hooks.json
+sed -i -e "s/CUCYBER_DEV_SECRET/${CUCYBER_DEV_SECRET}/g" /etc/webhook/hooks.json
+sed -i -e "s/CUCYBER_HACKPACK_SECRET/${CUCYBER_HACKPACK_SECRET}/g" /etc/webhook/hooks.json
+sed -i -e "s/CUCYBER_PRESENTATIONS_SECRET/${CUCYBER_PRESENTATIONS_SECRET}/g" /etc/webhook/hooks.json
+
+# generate nginx config
+cp -f /ext/etc/nginx/nginx.conf /etc/nginx/nginx.conf
+
+# run nginx
+service nginx restart
+
+# run webhook
+exec /usr/bin/webhook -verbose -hooks=/etc/webhook/hooks.json -hotreload

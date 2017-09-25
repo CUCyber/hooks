@@ -1,0 +1,109 @@
+[
+  {
+    "id": "cucyber-dev",
+    "execute-command": "/ext/bin/cucyber-dev-update",
+    "command-working-directory": "/var/www/cucyber",
+    "trigger-rule":
+    {
+      "and":
+      [
+        {
+          "match":
+          {
+            "type": "payload-hash-sha1",
+            "secret": "CUCYBER_DEV_SECRET",
+            "parameter":
+            {
+              "source": "header",
+              "name": "X-Hub-Signature"
+            }
+          }
+        },
+        {
+          "match":
+          {
+            "type": "value",
+            "value": "refs/heads/dev",
+            "parameter":
+            {
+              "source": "payload",
+              "name": "ref"
+            }
+          }
+        }
+      ]
+    }
+  },
+  {
+    "id": "cucyber-hackpack",
+    "execute-command": "/ext/bin/cucyber-hackpack-update",
+    "command-working-directory": "/var/lib/git/cucyber/hackpack",
+    "trigger-rule":
+    {
+      "and":
+      [
+        {
+          "match":
+          {
+            "type": "payload-hash-sha1",
+            "secret": "CUCYBER_HACKPACK_SECRET",
+            "parameter":
+            {
+              "source": "header",
+              "name": "X-Hub-Signature"
+            }
+          }
+        },
+        {
+          "match":
+          {
+            "type": "value",
+            "value": "refs/heads/master",
+            "parameter":
+            {
+              "source": "payload",
+              "name": "ref"
+            }
+          }
+        }
+
+      ]
+    }
+  },
+  {
+    "id": "cucyber-presentations",
+    "execute-command": "/ext/bin/cucyber-presentations-update",
+    "command-working-directory": "/var/lib/git/cucyber/presentations",
+    "trigger-rule":
+    {
+      "and":
+      [
+        {
+          "match":
+          {
+            "type": "payload-hash-sha1",
+            "secret": "CUCYBER_PRESENTATIONS_SECRET",
+            "parameter":
+            {
+              "source": "header",
+              "name": "X-Hub-Signature"
+            }
+          }
+        },
+        {
+          "match":
+          {
+            "type": "value",
+            "value": "refs/heads/master",
+            "parameter":
+            {
+              "source": "payload",
+              "name": "ref"
+            }
+          }
+        }
+
+      ]
+    }
+  }
+]
