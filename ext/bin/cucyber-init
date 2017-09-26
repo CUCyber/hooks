@@ -1,22 +1,22 @@
 #!/bin/bash -e
+# setup SSH key
 if [ ! -e "$HOME"/.ssh/id_rsa ]; then
-	# setup SSH key
-	ssh-keygen -q -f "$HOME"/.ssh/id_rsa -N ''
-
-	# add GitHub fingerprint
-	ssh-keyscan github.com >>"$HOME"/.ssh/known_hosts
-
-	# setup git
-	git config --global user.email cyber@clemson.edu
-	git config --global user.name "CU Cyber"
-
-	# tell user to add key
+	/usr/bin/ssh-keygen -q -f "$HOME"/.ssh/id_rsa -N ''
 	echo 'SSH Public Key: '
 	echo
 	cat "$HOME"/.ssh/id_rsa.pub
 	echo
 	echo 'Add this key to GitHub and restart the container'
 	exit
+fi
+
+# add GitHub fingerprint
+[ -e "$HOME"/.ssh/known_hosts ] || ssh-keyscan github.com >"$HOME"/.ssh/known_hosts
+
+# setup git
+if [ ! -e "$HOME"/.gitconfig ]; then
+	git config --global user.email cyber@clemson.edu
+	git config --global user.name "CU Cyber"
 fi
 
 # clone repositories
