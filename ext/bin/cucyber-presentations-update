@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/sh -e
 git -C /var/lib/git/cucyber/presentations fetch --all && git -C /var/lib/git/cucyber/presentations reset --hard origin/master
 make -C /var/lib/git/cucyber/presentations clean
 make -C /var/lib/git/cucyber/presentations -B reveal.js/lib

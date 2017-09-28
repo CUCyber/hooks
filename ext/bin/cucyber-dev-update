@@ -1,2 +1,2 @@
-#!/bin/sh
+#!/bin/sh -e
 git -C /var/www/cucyber fetch --all && git -C /var/www/cucyber reset --hard origin/dev
