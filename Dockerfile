@@ -10,5 +10,4 @@ COPY        ext /ext
 
 CMD         /ext/bin/cucyber-init
 
-EXPOSE      8000
-EXPOSE      9000
+EXPOSE      80
