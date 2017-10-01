@@ -1,4 +1,4 @@
 CU Cyber Hooks
 ==============
 
-In this repository is the Docker image used to automate cucyber.net.
+The specification for the Docker image to automate building the hackpack and presentations for cucyber.net.
