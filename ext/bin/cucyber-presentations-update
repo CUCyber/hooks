@@ -1,5 +1,6 @@
 #!/bin/sh -e
+git -C /var/lib/git/cucyber/website fetch --all && git -C /var/lib/git/cucyber/website reset --hard origin/dev
 git -C /var/lib/git/cucyber/presentations fetch --all && git -C /var/lib/git/cucyber/presentations reset --hard origin/master
 make -C /var/lib/git/cucyber/presentations clean
-make -C /var/lib/git/cucyber/presentations -B reveal.js/lib
+make -C /var/lib/git/cucyber/presentations -B reveal.js/lib/js/socket.io.js
 make -C /var/lib/git/cucyber/presentations update
