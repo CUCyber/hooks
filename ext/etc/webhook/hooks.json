@@ -71,6 +71,42 @@
     }
   },
   {
+    "id": "cucyber-wiki",
+    "execute-command": "/ext/bin/cucyber-wiki-update",
+    "command-working-directory": "/var/lib/git/cucyber/wiki",
+    "trigger-rule":
+    {
+      "and":
+      [
+        {
+          "match":
+          {
+            "type": "payload-hash-sha1",
+            "secret": "CUCYBER_WIKI_SECRET",
+            "parameter":
+            {
+              "source": "header",
+              "name": "X-Hub-Signature"
+            }
+          }
+        },
+        {
+          "match":
+          {
+            "type": "value",
+            "value": "refs/heads/master",
+            "parameter":
+            {
+              "source": "payload",
+              "name": "ref"
+            }
+          }
+        }
+
+      ]
+    }
+  },
+  {
     "id": "cucyber-presentations",
     "execute-command": "/ext/bin/cucyber-presentations-update",
     "command-working-directory": "/var/lib/git/cucyber/presentations",
