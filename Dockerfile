@@ -1,4 +1,4 @@
-FROM        ubuntu:zesty
+FROM        ubuntu:bionic
 
 RUN         apt-get -y update
 RUN         apt-get -y install nginx webhook
