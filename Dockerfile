@@ -1,10 +1,26 @@
 FROM        ubuntu
 
-RUN         apt-get -y update
-RUN         apt-get -y install nginx webhook
-RUN         apt-get -y install git make wget
-RUN         apt-get -y install rsync python python-watchdog
-RUN         DEBIAN_FRONTEND=noninteractive apt-get -y install python3 python3-pandocfilters pandoc texlive-latex-extra
+RUN         apt-get -y update \
+                && DEBIAN_FRONTEND=noninteractive apt-get install -y \
+                    nginx \
+                    webhook \
+                    git \
+                    make \
+                    wget \
+                    rsync \
+                    python \
+                    python-watchdog \
+                    python3 \
+                    python3-pandocfilters \
+                    pandoc \
+                    texlive-latex-extra \
+                    ruby-dev \
+                    gcc \
+                    g++ \
+                    zlib1g-dev \
+                    bundler \
+                && touch "/tmp/Gemfile" \
+                && BUNDLE_GEMFILE="/tmp/Gemfile" bundle add github-pages --source "https://rubygems.org" --group "jekyll_plugins"
 
 COPY        ext /ext
 

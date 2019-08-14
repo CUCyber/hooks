@@ -36,6 +36,11 @@ sed -i -e "s/CUCYBER_WIKI_SECRET/${CUCYBER_WIKI_SECRET}/g" /etc/webhook/hooks.js
 sed -i -e "s/CUCYBER_PRESENTATIONS_SECRET/${CUCYBER_PRESENTATIONS_SECRET}/g" /etc/webhook/hooks.json
 sed -i -e "s/CUCYBER_CLASS_SECRET/${CUCYBER_CLASS_SECRET}/g" /etc/webhook/hooks.json
 
+# generate site
+cd /var/www/cucyber
+
+jekyll build
+
 # generate nginx config
 cp -f /ext/etc/nginx/nginx.conf /etc/nginx/nginx.conf
 
