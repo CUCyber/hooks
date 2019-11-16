@@ -1,9 +1,9 @@
 #!/bin/bash -e
 # setup directories
 mkdir -p /var/lib/git/cucyber
-chown cucyber:cucyber /var/lib/git/cucyber
+chown -R cucyber:cucyber /var/lib/git/cucyber
 mkdir -p /var/www/cucyber
-chown cucyber:cucyber /var/www/cucyber
+chown -R cucyber:cucyber /var/www/cucyber
 
 # setup user account
 setpriv --reuid=cucyber --regid=cucyber --init-groups --reset-env bash -e <<EOF || exit
