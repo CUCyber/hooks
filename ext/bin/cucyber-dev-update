@@ -1,7 +1,7 @@
 #!/bin/bash -e
-git -C /var/www/cucyber.github.io.git fetch --all --prune
+git -C /var/lib/git/cucyber/cucyber.github.io.git fetch --all --prune
 
-branches="$(git -C /var/www/cucyber.github.io.git for-each-ref --format '%(refname:short)' refs/heads/ | grep '^[a-zA-Z0-9_-]\+$')"
+branches="$(git -C /var/lib/git/cucyber/cucyber.github.io.git for-each-ref --format '%(refname:short)' refs/heads/ | grep '^[a-zA-Z0-9_-]\+$')"
 
 for dir in /var/www/cucyber/*; do
 	name="$(basename "$dir")"
@@ -24,7 +24,7 @@ for branch in $branches; do
 	dir="/var/www/cucyber/$branch"
 
 	if [ -e "$dir" ]; then
-		git clone -b "$branch" --single-branch /var/www/cucyber.github.io.git "$dir"
+		git clone -b "$branch" --single-branch /var/lib/git/cucyber/cucyber.github.io.git "$dir"
 	else
 		git -C "$dir" fetch --all --prune && git -C "$dir" reset --hard origin/"$branch" && git -C "$dir" clean -xdf
 	fi
