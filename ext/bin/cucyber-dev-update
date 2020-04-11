@@ -24,9 +24,9 @@ for branch in $branches; do
 	dir="/var/www/cucyber/$branch"
 
 	if [ -e "$dir" ]; then
-		git clone -b "$branch" --single-branch /var/lib/git/cucyber/cucyber.github.io.git "$dir"
-	else
 		git -C "$dir" fetch --all --prune && git -C "$dir" reset --hard origin/"$branch" && git -C "$dir" clean -xdf
+	else
+		git clone -b "$branch" --single-branch /var/lib/git/cucyber/cucyber.github.io.git "$dir"
 	fi
 
 	(cd "$dir" && jekyll build)
