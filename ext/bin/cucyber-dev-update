@@ -1,5 +1,4 @@
 #!/bin/sh -e
-git -C /var/www/cucyber fetch --all && git -C /var/www/cucyber reset --hard origin/dev
+git -C /var/www/cucyber fetch --all && git -C /var/www/cucyber reset --hard origin/dev && git -C /var/www/cucyber clean -xdf
 
-rm -rf /var/www/cucyber/_site
 (cd /var/www/cucyber && jekyll build)
