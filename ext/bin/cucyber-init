@@ -2,6 +2,8 @@
 # setup directories
 mkdir -p /var/lib/git/cucyber
 chown -R cucyber:cucyber /var/lib/git/cucyber
+mkdir -p /var/www/cucyber.github.io.git
+chown -R cucyber:cucyber /var/www/cucyber.github.io.git
 mkdir -p /var/www/cucyber
 chown -R cucyber:cucyber /var/www/cucyber
 
