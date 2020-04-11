@@ -1,5 +1,5 @@
 #!/bin/sh -e
-git -C /var/lib/git/cucyber/website fetch --all && git -C /var/lib/git/cucyber/website reset --hard origin/dev && git -C /var/lib/git/cucyber/website clean -xdf
-git -C /var/lib/git/cucyber/hackpack fetch --all && git -C /var/lib/git/cucyber/hackpack reset --hard origin/master && git -C /var/lib/git/cucyber/hackpack clean -xdf
+git -C /var/lib/git/cucyber/website fetch --all --prune && git -C /var/lib/git/cucyber/website reset --hard origin/dev && git -C /var/lib/git/cucyber/website clean -xdf
+git -C /var/lib/git/cucyber/hackpack fetch --all --prune && git -C /var/lib/git/cucyber/hackpack reset --hard origin/master && git -C /var/lib/git/cucyber/hackpack clean -xdf
 make -C /var/lib/git/cucyber/hackpack clean
 make -C /var/lib/git/cucyber/hackpack update
