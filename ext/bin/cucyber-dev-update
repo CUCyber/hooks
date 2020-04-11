@@ -9,13 +9,13 @@ for dir in /var/www/cucyber/*; do
 	found=0
 
 	for branch in $branches; do
-		if [ "$branch" == "$name" ]; then
+		if [ "$branch" = "$name" ]; then
 			found=1
 			break
 		fi
 	done
 
-	if [ "$found" == 0 ]; then
+	if [ "$found" = 0 ]; then
 		rm -rf "$dir"
 	fi
 done
