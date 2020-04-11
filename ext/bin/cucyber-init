@@ -28,7 +28,7 @@ if [ ! -e "\$HOME"/.gitconfig ]; then
 fi
 
 # clone repositories
-[ -e /var/www/cucyber/.git ] || git clone -b dev --single-branch git@github.com:CUCyber/cucyber.github.io.git /var/www/cucyber
+[ -e /var/www/cucyber.github.io.git ] || git clone --mirror git@github.com:CUCyber/cucyber.github.io.git /var/www/cucyber.github.io.git
 [ -e /var/lib/git/cucyber/website/.git ] || git clone -b dev --single-branch git@github.com:CUCyber/cucyber.github.io.git /var/lib/git/cucyber/website
 [ -e /var/lib/git/cucyber/hackpack/.git ] || git clone -b master --single-branch git@github.com:CUCyber/hackpack.git /var/lib/git/cucyber/hackpack
 [ -e /var/lib/git/cucyber/wiki/.git ] || git clone -b master --single-branch git@github.com:CUCyber/wiki.git /var/lib/git/cucyber/wiki

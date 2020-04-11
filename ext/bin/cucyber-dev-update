@@ -1,4 +1,33 @@
 #!/bin/sh -e
-git -C /var/www/cucyber fetch --all && git -C /var/www/cucyber reset --hard origin/dev && git -C /var/www/cucyber clean -xdf
+git -C /var/www/cucyber.github.io.git fetch --all --prune
 
-(cd /var/www/cucyber && jekyll build)
+branches=`git -C /var/www/cucyber.github.io.git for-each-ref --format '%(refname:short)' refs/heads/ | grep '^[a-zA-Z0-9_-]\+$'`
+
+for dir in /var/www/cucyber/*; do
+	name=`basename "$dir"`
+
+	found=0
+
+	for branch in $branches; do
+		if [ "$branch" == "$name" ]; then
+			found=1
+			break
+		fi
+	done
+
+	if [ "$found" == 0 ]; then
+		rm -rf "$dir"
+	fi
+done
+
+for branch in $branches; do
+	dir="/var/www/cucyber/$branch"
+
+	if [ -e "$dir" ]; then
+		git clone -b "$branch" --single-branch /var/www/cucyber.github.io.git "$dir"
+	else
+		git -C "$dir" fetch --all --prune && git -C "$dir" reset --hard origin/"$branch" && git -C "$dir" clean -xdf
+	fi
+
+	(cd "$dir" && jekyll build)
+done
