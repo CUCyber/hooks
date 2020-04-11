@@ -1,10 +1,10 @@
-#!/bin/sh -e
+#!/bin/bash -e
 git -C /var/www/cucyber.github.io.git fetch --all --prune
 
-branches=`git -C /var/www/cucyber.github.io.git for-each-ref --format '%(refname:short)' refs/heads/ | grep '^[a-zA-Z0-9_-]\+$'`
+branches="$(git -C /var/www/cucyber.github.io.git for-each-ref --format '%(refname:short)' refs/heads/ | grep '^[a-zA-Z0-9_-]\+$')"
 
 for dir in /var/www/cucyber/*; do
-	name=`basename "$dir"`
+	name="$(basename "$dir")"
 
 	found=0
 
