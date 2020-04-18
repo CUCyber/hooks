@@ -10,8 +10,6 @@ RUN         apt-get -y update && \
                 make \
                 wget \
                 rsync \
-                python \
-                python-watchdog \
                 python3 \
                 python3-pandocfilters \
                 pandoc \
