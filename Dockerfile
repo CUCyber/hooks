@@ -1,4 +1,4 @@
-FROM        ubuntu:disco
+FROM        ubuntu:focal
 
 RUN         useradd -r -d /var/lib/git/cucyber -s /sbin/nologin cucyber
 
