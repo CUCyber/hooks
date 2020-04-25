@@ -6,7 +6,7 @@ mkdir -p /var/www/cucyber
 chown -R cucyber:cucyber /var/www/cucyber
 
 # setup user account
-setpriv --reuid=cucyber --regid=cucyber --init-groups --reset-env bash -e <<EOF || exit
+setpriv --reuid=cucyber --regid=cucyber --init-groups --reset-env bash -e <<EOF || exit 1
 # setup SSH key
 if [ ! -e "\$HOME"/.ssh/id_rsa ]; then
 	/usr/bin/ssh-keygen -q -f "\$HOME"/.ssh/id_rsa -N ''
@@ -36,7 +36,7 @@ fi
 [ -e /var/lib/git/cucyber/class/.git ] || git clone -b master --single-branch git@github.com:CUCyber/class.git /var/lib/git/cucyber/class
 
 # update dev site
-/ext/bin/cucyber-dev-update
+/ext/bin/cucyber-dev-all-update
 EOF
 
 # generate webhook config
@@ -47,6 +47,11 @@ sed -i -e "s/CUCYBER_HACKPACK_SECRET/${CUCYBER_HACKPACK_SECRET}/g" /etc/webhook/
 sed -i -e "s/CUCYBER_WIKI_SECRET/${CUCYBER_WIKI_SECRET}/g" /etc/webhook/hooks.json
 sed -i -e "s/CUCYBER_PRESENTATIONS_SECRET/${CUCYBER_PRESENTATIONS_SECRET}/g" /etc/webhook/hooks.json
 sed -i -e "s/CUCYBER_CLASS_SECRET/${CUCYBER_CLASS_SECRET}/g" /etc/webhook/hooks.json
+
+# write access token netrc file
+echo "machine api.github.com login ${CUCYBER_USERNAME} password ${CUCYBER_ACCESS_TOKEN}" >/var/lib/git/cucyber/.netrc
+chown root:cucyber /var/lib/git/cucyber/.netrc
+chmod 640 /var/lib/git/cucyber/.netrc
 
 # generate nginx config
 cp -f /ext/etc/nginx/nginx.conf /etc/nginx/nginx.conf

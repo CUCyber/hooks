@@ -8,6 +8,7 @@ RUN         apt-get -y update && \
                 webhook \
                 git \
                 make \
+                curl \
                 wget \
                 rsync \
                 python3 \

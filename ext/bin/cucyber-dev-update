@@ -1,35 +1,86 @@
 #!/bin/bash -e
-git -C /var/lib/git/cucyber/cucyber.github.io.git fetch --all --prune
+ref="$1"
+sha="$2"
+url="$(echo "$3" | sed -e "s/{sha}/$sha/")"
 
-branches="$(git -C /var/lib/git/cucyber/cucyber.github.io.git for-each-ref --format '%(refname:short)' refs/heads/ | grep '^[a-zA-Z0-9_-]\+$')"
+case "$ref" in
+	refs/heads/*)
+		branch="$(echo "$ref" | sed -e 's#^refs/heads/##')"
+		;;
 
-for dir in /var/www/cucyber/*; do
-	name="$(basename "$dir")"
+	*)
+		branch=''
+		;;
+esac
 
-	found=0
+send() {
+	if [ -z "$branch" -o "$sha" = '0000000000000000000000000000000000000000' ]; then
+		return
+	fi
 
-	for branch in $branches; do
-		if [ "$branch" = "$name" ]; then
-			found=1
-			break
-		fi
-	done
+	curl --netrc --request POST --header 'Content-Type: application/json' --data '@-' "$url" <<EOF
+{
+  "state": "$1",
+  "target_url": "$3",
+  "description": "$2",
+  "context": "build/jekyll"
+}
+EOF
+}
 
-	if [ "$found" = 0 ]; then
+send 'pending' 'Building site branch from Jekyll sources'
+
+trap "send 'error' 'Internal error while building site branch'" ERR
+
+fail() {
+	send 'failure' 'Failed to build site branch from Jekyll sources'
+	exit
+}
+
+case "$sha" in
+	0000000000000000000000000000000000000000)
+		git -C /var/lib/git/cucyber/cucyber.github.io.git remote prune origin
+		;;
+
+	*)
+		git -C /var/lib/git/cucyber/cucyber.github.io.git fetch --prune origin "$ref"
+		;;
+esac
+
+if [ -z "$branch" ]; then
+	exit
+fi
+
+case "$branch" in
+	dev)
+		target="https://dev.cucyber.net"
+		;;
+
+	*)
+		target="https://${branch}.dev.cucyber.net"
+		;;
+esac
+
+case "$sha" in
+	0000000000000000000000000000000000000000)
+		dir="/var/www/cucyber/$branch"
+
 		rm -rf "$dir"
-	fi
-done
+		;;
 
-for branch in $branches; do
-	dir="/var/www/cucyber/$branch"
+	*)
+		dir="/var/www/cucyber/$branch"
 
-	if [ -e "$dir" ]; then
-		git -C "$dir" fetch --all --prune && git -C "$dir" reset --hard origin/"$branch" && git -C "$dir" clean -xdf
-	else
-		git clone -b "$branch" --single-branch /var/lib/git/cucyber/cucyber.github.io.git "$dir"
-	fi
+		if [ -e "$dir" ]; then
+			git -C "$dir" fetch origin "$branch" && git -C "$dir" reset --hard origin/"$branch" && git -C "$dir" clean -xdf
+		else
+			git clone -b "$branch" --single-branch /var/lib/git/cucyber/cucyber.github.io.git "$dir"
+		fi
 
-	sed -i -e "s#^url:.*\$#url: https://${branch}.dev.cucyber.net#" "$dir"/_config.yml
+		sed -i -e "s#^url:.*\$#url: ${target}#" "$dir"/_config.yml
 
-	(cd "$dir" && jekyll build)
-done
+		(cd "$dir" && jekyll build) || fail
+		;;
+esac
+
+send 'success' 'Site branch successfully built from Jekyll sources' "${target}/"

@@ -3,6 +3,21 @@
     "id": "cucyber-dev",
     "execute-command": "/ext/bin/cucyber-dev-update",
     "command-working-directory": "/var/www/cucyber",
+    "pass-arguments-to-command":
+    [
+      {
+        "source": "payload",
+        "name": "ref"
+      },
+      {
+        "source": "payload",
+        "name": "after"
+      },
+      {
+        "source": "payload",
+        "name": "repository.statuses_url"
+      }
+    ],
     "trigger-rule":
     {
       "and":
