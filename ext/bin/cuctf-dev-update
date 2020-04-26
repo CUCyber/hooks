@@ -39,11 +39,11 @@ fail() {
 
 case "$sha" in
 	0000000000000000000000000000000000000000)
-		git -C /var/lib/git/cucyber/cucyber.github.io.git remote prune origin
+		git -C /var/lib/git/cucyber/cuctf.io.git remote prune origin
 		;;
 
 	*)
-		git -C /var/lib/git/cucyber/cucyber.github.io.git fetch --prune origin "$ref"
+		git -C /var/lib/git/cucyber/cuctf.io.git fetch --prune origin "$ref"
 		;;
 esac
 
@@ -53,28 +53,28 @@ fi
 
 case "$branch" in
 	dev)
-		target="https://dev.cucyber.net"
+		target="https://dev.cuctf.io"
 		;;
 
 	*)
-		target="https://${branch}.dev.cucyber.net"
+		target="https://${branch}.dev.cuctf.io"
 		;;
 esac
 
 case "$sha" in
 	0000000000000000000000000000000000000000)
-		dir="/var/www/cucyber/$branch"
+		dir="/var/www/cuctf/$branch"
 
 		rm -rf "$dir"
 		;;
 
 	*)
-		dir="/var/www/cucyber/$branch"
+		dir="/var/www/cuctf/$branch"
 
 		if [ -e "$dir" ]; then
 			git -C "$dir" fetch origin "$branch" && git -C "$dir" reset --hard origin/"$branch" && git -C "$dir" clean -xdf
 		else
-			git clone -b "$branch" --single-branch /var/lib/git/cucyber/cucyber.github.io.git "$dir"
+			git clone -b "$branch" --single-branch /var/lib/git/cucyber/cuctf.io.git "$dir"
 		fi
 
 		sed -i -e "s#^url:.*\$#url: ${target}#" "$dir"/_config.yml &>/dev/null || true

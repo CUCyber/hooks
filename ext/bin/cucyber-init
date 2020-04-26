@@ -4,6 +4,8 @@ mkdir -p /var/lib/git/cucyber
 chown -R cucyber:cucyber /var/lib/git/cucyber
 mkdir -p /var/www/cucyber
 chown -R cucyber:cucyber /var/www/cucyber
+mkdir -p /var/www/cuctf
+chown -R cucyber:cucyber /var/www/cuctf
 
 # setup user account
 setpriv --reuid=cucyber --regid=cucyber --init-groups --reset-env bash -e <<EOF || exit 1
@@ -34,9 +36,11 @@ fi
 [ -e /var/lib/git/cucyber/wiki/.git ] || git clone -b master --single-branch git@github.com:CUCyber/wiki.git /var/lib/git/cucyber/wiki
 [ -e /var/lib/git/cucyber/presentations/.git ] || git clone -b master --single-branch git@github.com:CUCyber/presentations.git /var/lib/git/cucyber/presentations
 [ -e /var/lib/git/cucyber/class/.git ] || git clone -b master --single-branch git@github.com:CUCyber/class.git /var/lib/git/cucyber/class
+[ -e /var/lib/git/cucyber/cuctf.io.git ] || git clone --mirror git@github.com:CUCyber/cuctf.io.git /var/lib/git/cucyber/cuctf.io.git
 
 # update dev site
 /ext/bin/cucyber-dev-all-update
+/ext/bin/cuctf-dev-all-update
 EOF
 
 # generate webhook config
@@ -47,6 +51,7 @@ sed -i -e "s/CUCYBER_HACKPACK_SECRET/${CUCYBER_HACKPACK_SECRET}/g" /etc/webhook/
 sed -i -e "s/CUCYBER_WIKI_SECRET/${CUCYBER_WIKI_SECRET}/g" /etc/webhook/hooks.json
 sed -i -e "s/CUCYBER_PRESENTATIONS_SECRET/${CUCYBER_PRESENTATIONS_SECRET}/g" /etc/webhook/hooks.json
 sed -i -e "s/CUCYBER_CLASS_SECRET/${CUCYBER_CLASS_SECRET}/g" /etc/webhook/hooks.json
+sed -i -e "s/CUCTF_DEV_SECRET/${CUCTF_DEV_SECRET}/g" /etc/webhook/hooks.json
 
 # write access token netrc file
 echo "machine api.github.com login ${CUCYBER_USERNAME} password ${CUCYBER_ACCESS_TOKEN}" >/var/lib/git/cucyber/.netrc

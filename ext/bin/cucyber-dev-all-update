@@ -29,7 +29,7 @@ for branch in $branches; do
 		git clone -b "$branch" --single-branch /var/lib/git/cucyber/cucyber.github.io.git "$dir"
 	fi
 
-	sed -i -e "s#^url:.*\$#url: https://${branch}.dev.cucyber.net#" "$dir"/_config.yml
+	sed -i -e "s#^url:.*\$#url: https://${branch}.dev.cucyber.net#" "$dir"/_config.yml &>/dev/null || true
 
 	(cd "$dir" && jekyll build)
 done

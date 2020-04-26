@@ -69,7 +69,6 @@
             }
           }
         }
-
       ]
     }
   },
@@ -105,7 +104,6 @@
             }
           }
         }
-
       ]
     }
   },
@@ -141,7 +139,6 @@
             }
           }
         }
-
       ]
     }
   },
@@ -177,7 +174,44 @@
             }
           }
         }
-
+      ]
+    }
+  },
+  {
+    "id": "cuctf-dev",
+    "execute-command": "/ext/bin/cuctf-dev-update",
+    "command-working-directory": "/var/www/cuctf",
+    "pass-arguments-to-command":
+    [
+      {
+        "source": "payload",
+        "name": "ref"
+      },
+      {
+        "source": "payload",
+        "name": "after"
+      },
+      {
+        "source": "payload",
+        "name": "repository.statuses_url"
+      }
+    ],
+    "trigger-rule":
+    {
+      "and":
+      [
+        {
+          "match":
+          {
+            "type": "payload-hash-sha1",
+            "secret": "CUCTF_DEV_SECRET",
+            "parameter":
+            {
+              "source": "header",
+              "name": "X-Hub-Signature"
+            }
+          }
+        }
       ]
     }
   }
