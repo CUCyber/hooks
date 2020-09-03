@@ -2,5 +2,5 @@
 git -C /var/lib/git/cucyber/website fetch --all --prune && git -C /var/lib/git/cucyber/website reset --hard origin/dev && git -C /var/lib/git/cucyber/website clean -xdf
 git -C /var/lib/git/cucyber/class fetch --all --prune && git -C /var/lib/git/cucyber/class reset --hard origin/master && git -C /var/lib/git/cucyber/class clean -xdf
 make -C /var/lib/git/cucyber/class clean
-make -C /var/lib/git/cucyber/class -B reveal.js/package.json
+make -C /var/lib/git/cucyber/class -B vendor/socket.io-client/package.json vendor/multiplex/package.json vendor/reveal.js/package.json
 make -C /var/lib/git/cucyber/class update
